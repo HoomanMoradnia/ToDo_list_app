@@ -1,14 +1,11 @@
-[
-    {
-        "title": "learing",
-        "deadline": "2025-06-29",
-        "priority": "low",
-        "done": false
-    },
-    {
-        "title": "learing",
-        "deadline": "2025-06-29",
-        "priority": "high",
-        "done": false
+{
+    "2025-07-07": {
+        "Mon": [],
+        "Tues": [],
+        "Wed": [],
+        "Thur": [],
+        "Fri": [],
+        "Sat": [],
+        "Sun": []
     }
-]
+}
