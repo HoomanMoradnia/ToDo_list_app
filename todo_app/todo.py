@@ -6,7 +6,23 @@ FILE_NAME = "tasks.json"
 def load_tasks():
     if os.path.exists(FILE_NAME):
         with open(FILE_NAME, "r") as f:
-            return json.load(f)
+            data = json.load(f)
+            # Handle migration from old weekly format to new simple format
+            if isinstance(data, dict):
+                # Old format: {"week_key": {"day": [tasks]}}
+                # Convert to new format: [tasks]
+                all_tasks = []
+                for week_data in data.values():
+                    if isinstance(week_data, dict):
+                        for day_tasks in week_data.values():
+                            if isinstance(day_tasks, list):
+                                all_tasks.extend(day_tasks)
+                return all_tasks
+            elif isinstance(data, list):
+                # Already in new format
+                return data
+            else:
+                return []
     return []
 
 def save_tasks(tasks):
@@ -19,16 +35,12 @@ def show_tasks(tasks):
     else:
         for i, task in enumerate(tasks, 1):
             status = "✓" if task["done"] else "✗"
-            print(f"{i}. [{status}] {task['title']} | Deadline: {task['deadline']} | Priority: {task['priority']}")
+            print(f"{i}. [{status}] {task['title']}")
 
 def add_task(tasks):
     title = input("Enter task title: ")
-    deadline = input("Enter deadline (YYYY-MM-DD): ")
-    priority = input("Enter priority (low/medium/high): ").lower()
     tasks.append({
         "title": title,
-        "deadline": deadline,
-        "priority": priority,
         "done": False
     })
     print("Task added!")
